@@ -10,3 +10,6 @@ stripe:
   apiUrl: https://api.stripe.com
   version: 1.2.3
   products: product1, product2, product3
+email:
+  smtpHost: smtp.example.com
+  smtpPort: 587
