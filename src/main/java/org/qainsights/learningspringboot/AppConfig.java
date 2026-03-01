@@ -20,7 +20,6 @@ public class AppConfig {
         return new PaypalPaymentService();
     }
 
-
     @Bean
     public OrderService orderService() {
         if(defaultPayment.equals("stripe")) {
