@@ -19,7 +19,7 @@ public class LearningSpringbootApplication {
 		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class, args);
 		var userBean = context.getBean(UserService.class);
 		userBean.registerUser(new User(2L, "test@example.com", "password", "Test User"));
-		userBean.registerUser(new User(1L, "test@example.com", "password", "Test User"));
+//		userBean.registerUser(new User(1L, "test@example.com", "password", "Test User"));
 
 	}
 
