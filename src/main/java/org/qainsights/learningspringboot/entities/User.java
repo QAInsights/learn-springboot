@@ -14,7 +14,6 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "users")
 public class User {
 
@@ -29,19 +28,30 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+    orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     private List<Address> addresses = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "user_tags",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-
     @Builder.Default
-     private Set<Tag> tags = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
+
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    private Profile profile;
+
+    @ManyToMany
+    @JoinTable(name = "wishlist", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> wishList = new HashSet<>();
 
     public void addAddress(Address address) {
         System.out.println(address);
@@ -67,7 +77,15 @@ public class User {
         tag.getUsers().remove(this);
     }
 
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
+    public void addProducts(Product p) {
+        wishList.add(p);
+    }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "email = " + email + ", " +
+                "name = " + name + ")";
+    }
 }

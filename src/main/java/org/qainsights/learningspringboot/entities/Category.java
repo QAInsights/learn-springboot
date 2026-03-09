@@ -1,11 +1,7 @@
 package org.qainsights.learningspringboot.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.jspecify.annotations.NonNull;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -13,21 +9,25 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Entity
+@Builder
+@Table(name = "categories" )
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(nullable = false, name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Byte id;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
     private Set<Product> products = new HashSet<>();
 
 
+    public Category(byte b) {
+        this.id = b;
+    }
 }

@@ -2,32 +2,37 @@ package org.qainsights.learningspringboot.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 
 import java.math.BigDecimal;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 @Getter
 @Setter
-@Table(name = "products")
+@Entity
+@Builder
+@Table(name = "products", schema = "store")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @ToString.Exclude
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
-
-    @ToString.Exclude
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private Category category;
+
+
+
+
 }

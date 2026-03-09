@@ -34,7 +34,7 @@ public class Profile {
     @Column(name = "loyalty_points", columnDefinition = "int UNSIGNED")
     private Long loyaltyPoints;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
     @ToString.Exclude
