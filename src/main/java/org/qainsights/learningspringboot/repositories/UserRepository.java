@@ -1,5 +1,6 @@
 package org.qainsights.learningspringboot.repositories;
 
+import org.qainsights.learningspringboot.dtos.UserSummary;
 import org.qainsights.learningspringboot.entities.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @EntityGraph(attributePaths = "addresses")
     @Query("select u from User u")
     List<User> findAllWithAddresses();
+
+    @Query("select u.id as id, u.email as email from User u where u.profile.loyaltyPoints > :loyaltyPoints order by u.email")
+    List<UserSummary> findLoyalUsers(Long loyaltyPoints);
 }

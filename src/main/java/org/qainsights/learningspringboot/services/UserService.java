@@ -148,6 +148,12 @@ public class UserService {
         System.out.println(products);
     }
 
+    @Transactional
+    public void fetchProductsByPrice() {
+        var products = productRepository.findProducts(BigDecimal.ONE, BigDecimal.TEN);
+        System.out.println(products);
+    }
+
     public void fetchUser() {
         var user = userRepository.findByEmail("test1@test.com").orElseThrow();
         System.out.println(user);
@@ -163,6 +169,14 @@ public class UserService {
         });
 
 
+    }
+
+    @Transactional
+    public void getProfile() {
+        var users = userRepository.findLoyalUsers(1L);
+        users.forEach((u) -> {
+            System.out.println(u.getId() + ":" + u.getEmail());
+        });
     }
 
 }

@@ -6,6 +6,7 @@ import org.qainsights.learningspringboot.entities.Category;
 import org.qainsights.learningspringboot.entities.Product;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -44,8 +45,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 //    List<Product> findProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
 
-    @Query("select p from Product p where p.price between ?1 and ?2 order by p.name")
-    List<Product> findProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
+//    @Query("select p from Product p where p.price between ?1 and ?2 order by p.name")
+    @Procedure("findProductsByPrice")
+    List<Product> findProducts(BigDecimal min, BigDecimal max);
+//    List<Product> findProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
 
     @Query("select count(p) from Product p where p.price between :min and :max")

@@ -25,7 +25,7 @@ public class LearningSpringbootApplication {
 
 		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 		var svc = context.getBean(UserService.class);
-		svc.fetchUsers();
+		svc.getProfile();
 
 //		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 //		var repo = context.getBean(UserRepository.class);
