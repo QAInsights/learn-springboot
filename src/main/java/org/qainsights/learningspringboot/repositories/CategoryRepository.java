@@ -1,4 +1,4 @@
-package org.qainsights.learningspringboot.services;
+package org.qainsights.learningspringboot.repositories;
 
 import org.qainsights.learningspringboot.entities.Category;
 import org.springframework.data.repository.CrudRepository;

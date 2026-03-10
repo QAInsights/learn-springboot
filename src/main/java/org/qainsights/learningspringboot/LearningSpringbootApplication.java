@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ public class LearningSpringbootApplication {
 
 		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 		var svc = context.getBean(UserService.class);
-		svc.getProfile();
+		svc.fetchProductsBySpec("prod", BigDecimal.ONE, BigDecimal.valueOf(14));
 
 //		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 //		var repo = context.getBean(UserRepository.class);

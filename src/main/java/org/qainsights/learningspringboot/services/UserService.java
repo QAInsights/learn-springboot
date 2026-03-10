@@ -6,9 +6,12 @@ import org.qainsights.learningspringboot.entities.Address;
 import org.qainsights.learningspringboot.entities.Category;
 import org.qainsights.learningspringboot.entities.Product;
 import org.qainsights.learningspringboot.entities.User;
-import org.qainsights.learningspringboot.repositories.AddressRepository;
-import org.qainsights.learningspringboot.repositories.ProfileRepository;
-import org.qainsights.learningspringboot.repositories.UserRepository;
+import org.qainsights.learningspringboot.repositories.*;
+import org.qainsights.learningspringboot.repositories.spec.ProductSpec;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.PredicateSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,10 +146,10 @@ public class UserService {
         productRepository.updatePriceByCategory(BigDecimal.valueOf(12), (byte) 1);
     }
 
-    public void fetchProducts() {
-        var products = productRepository.findByCategory(new Category((byte) 1));
-        System.out.println(products);
-    }
+//    public void fetchProducts() {
+//        var products = productRepository.findByCategory(new Category((byte) 1));
+//        System.out.println(products);
+//    }
 
     @Transactional
     public void fetchProductsByPrice() {
@@ -169,6 +172,39 @@ public class UserService {
         });
 
 
+    }
+
+    public void fetchProducts() {
+        var product = new Product();
+        product.setName("prod");
+         var matcher = ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        var example = Example.of(product, matcher);
+        var products = productRepository.findAll(example);
+        products.forEach(System.out::println);
+
+    }
+
+    public void fetchProductsByCriteria() {
+        var prod = productRepository.findProductsByCriteria("prod", BigDecimal.ONE, null);
+        prod.forEach(System.out::println);
+    }
+
+    public void fetchProductsBySpec(String name, BigDecimal minPrice, BigDecimal maxPrice) {
+        Specification<Product> specification = ((root, query, criteriaBuilder) ->
+                criteriaBuilder.conjunction());
+
+        if(name != null) {
+            specification = specification.and(ProductSpec.hasName(name));
+        }
+        if(minPrice != null) {
+            specification = specification.and(ProductSpec.hasPriceGreaterThanOrEqualTo(minPrice));
+        }
+        if(maxPrice != null) {
+            specification = specification.and(ProductSpec.hasPriceLessThanOrEqualTo(maxPrice));
+        }
+
+        productRepository.findAll(specification).forEach(System.out::println);
     }
 
     @Transactional

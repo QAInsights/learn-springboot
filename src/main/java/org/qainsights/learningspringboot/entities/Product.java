@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Table(name = "products", schema = "store")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

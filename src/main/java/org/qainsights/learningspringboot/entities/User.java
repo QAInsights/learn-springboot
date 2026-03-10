@@ -2,6 +2,7 @@ package org.qainsights.learningspringboot.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Example;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,6 +77,8 @@ public class User {
         tags.remove(tag);
         tag.getUsers().remove(this);
     }
+
+
 
     public void addProducts(Product p) {
         wishList.add(p);
