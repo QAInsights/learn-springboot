@@ -14,6 +14,7 @@ import java.util.Set;
 @Table(name = "categories" )
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+    @ToString.Exclude
     private Set<Product> products = new HashSet<>();
 
 

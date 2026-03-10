@@ -26,7 +26,7 @@ public class LearningSpringbootApplication {
 
 		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 		var svc = context.getBean(UserService.class);
-		svc.fetchProductsBySpec("prod", BigDecimal.ONE, BigDecimal.valueOf(14));
+		svc.fetchProductsCatBySpec("category1");
 
 //		ApplicationContext context = SpringApplication.run(LearningSpringbootApplication.class);
 //		var repo = context.getBean(UserRepository.class);

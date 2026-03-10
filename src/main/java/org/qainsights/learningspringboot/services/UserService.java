@@ -10,8 +10,11 @@ import org.qainsights.learningspringboot.repositories.*;
 import org.qainsights.learningspringboot.repositories.spec.ProductSpec;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.PredicateSpecification;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -205,6 +208,46 @@ public class UserService {
         }
 
         productRepository.findAll(specification).forEach(System.out::println);
+    }
+
+    public void fetchSortedProducts() {
+        var prod = Sort.by("name").and(
+                Sort.by("price").descending()
+        );
+
+        productRepository.findAll(prod).forEach(System.out::println);
+    }
+
+
+    public void fetchProductsCatBySpec(String categoryName) {
+        Specification<Product> specification = ((root, query, criteriaBuilder) ->
+                criteriaBuilder.conjunction());
+
+        if(categoryName != null) {
+            specification = specification.and(ProductSpec.hasCategoryName(categoryName));
+        }
+
+        productRepository.findAll(specification).forEach(System.out::println);
+    }
+
+
+    public void fetchPaginatedProfiles(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        var pres = productRepository.findAll(pageRequest);
+
+        var p = pres.getContent();
+        p.forEach(System.out::println);
+
+        System.out.println("Total " + pres.getTotalElements());
+        System.out.println("Pages " + pres.getTotalPages());
+
+    }
+
+    @Transactional
+    public void fetchProductsByCategoryCriteria(String category) {
+        var prod = productRepository.findProductsByCategoryCriteria(category);
+
+        prod.forEach(System.out::println);
     }
 
     @Transactional

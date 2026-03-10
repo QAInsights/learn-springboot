@@ -2,11 +2,9 @@ package org.qainsights.learningspringboot.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
+import org.qainsights.learningspringboot.entities.Category;
 import org.qainsights.learningspringboot.entities.Product;
 import org.springframework.stereotype.Repository;
 
@@ -37,5 +35,26 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository{
 
         cq.select(root).where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Product> findProductsByCategoryCriteria(String category) {
+
+
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        if(category != null){
+            Join<Product, Category> categoryJoin = root.join("category", JoinType.INNER);
+
+            predicates.add(criteriaBuilder.like(categoryJoin.get("name"), "%" + category + "%"));
+        }
+
+        criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+
     }
 }
